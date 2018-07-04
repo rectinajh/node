@@ -28,7 +28,8 @@ type detector struct {
 
 // NewDetector constructs Detector
 func NewDetector(ipResolver ip.Resolver, databasePath string) Detector {
-	return NewDetectorWithLocationResolver(ipResolver, NewResolver(databasePath))
+	//return NewDetectorWithLocationResolver(ipResolver, NewResolver(databasePath))
+	return NewDetectorWithLocationResolver(ipResolver, StaticResolver())
 }
 
 // NewDetectorWithLocationResolver constructs Detector
