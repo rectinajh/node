@@ -18,7 +18,6 @@
 package location
 
 import (
-	"encoding/base64"
 	"errors"
 	"fmt"
 	"github.com/mysterium/node/location/geodb"
@@ -26,7 +25,9 @@ import (
 	"net"
 )
 
-//go:generate go run ./generator/generator.go --dbname geodb/GeoLite2-Country.mmdb --output geodb
+// go:generate go run ./generator/generator.go --dbname db/GeoLite2-Country.mmdb --output geodb
+// go:generate go-bindata -split -pkg geodb -nomemcopy -o geodb db/...
+//go:generate fileb0x db/convert.json
 
 type staticResolver struct {
 	db *geoip2.Reader
@@ -35,7 +36,7 @@ type staticResolver struct {
 // StaticResolver returns Resolver which build in country base to lookup country by ip
 func StaticResolver() Resolver {
 
-	dbBytes, err := base64.RawStdEncoding.DecodeString(geodb.DbData)
+	dbBytes, err := geodb.ReadFile("geodb/db/GeoLite2-Country.mmdb")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
