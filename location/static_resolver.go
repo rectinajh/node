@@ -21,11 +21,12 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"github.com/mysterium/node/location/geodb"
 	"github.com/oschwald/geoip2-golang"
 	"net"
 )
 
-//go:generate go run ./generator/generator.go --dbname GeoLite2-Country.mmdb
+//go:generate go run ./generator/generator.go --dbname geodb/GeoLite2-Country.mmdb --output geodb
 
 type staticResolver struct {
 	db *geoip2.Reader
@@ -34,7 +35,7 @@ type staticResolver struct {
 // NewResolver returns Resolver which uses country database
 func StaticResolver() Resolver {
 
-	dbBytes, err := base64.RawStdEncoding.DecodeString(dbData)
+	dbBytes, err := base64.RawStdEncoding.DecodeString(geodb.DbData)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
