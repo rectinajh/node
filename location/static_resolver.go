@@ -32,7 +32,7 @@ type staticResolver struct {
 	db *geoip2.Reader
 }
 
-// NewResolver returns Resolver which uses country database
+// StaticResolver returns Resolver which build in country base to lookup country by ip
 func StaticResolver() Resolver {
 
 	dbBytes, err := base64.RawStdEncoding.DecodeString(geodb.DbData)
