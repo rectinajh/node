@@ -48,7 +48,7 @@ func main() {
 	exitOnError(err)
 
 	//split into 1mb size parts (1part one file)
-	parts := splitToFixedLengthSlices(encodedData, 3*1024*1024)
+	parts := splitToFixedLengthSlices(encodedData, 2*1024*1024)
 	var dbParts []dbPart
 	for i := 0; i < len(parts); i++ {
 		dbParts = append(dbParts, newDbPart(i, parts[i]))
