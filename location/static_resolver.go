@@ -25,7 +25,7 @@ import (
 	"net"
 )
 
-//go:generate fileb0x db/convert.json
+//go:generate go run generator/generator.go --dbname db/GeoLite2-Country.mmdb --output geodb
 
 type staticResolver struct {
 	db *geoip2.Reader
@@ -34,7 +34,7 @@ type staticResolver struct {
 // StaticResolver returns Resolver which build in country base to lookup country by ip
 func StaticResolver() Resolver {
 
-	dbBytes, err := geodb.ReadFile("geodb/db/GeoLite2-Country.mmdb")
+	dbBytes, err := geodb.LoadData()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
