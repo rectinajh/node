@@ -25,7 +25,7 @@ import (
 	"net"
 )
 
-//go:generate go run generator/generator.go --dbname db/GeoLite2-Country.mmdb --output geodb
+//go:generate go run generator/generator.go --dbname db/GeoLite2-Country.mmdb --output geodb --compress
 
 type staticResolver struct {
 	db *geoip2.Reader
