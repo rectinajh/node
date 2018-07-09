@@ -5,6 +5,7 @@ import (
 	"compress/gzip"
 	"encoding/base64"
 	"errors"
+	"io/ioutil"
 )
 
 // LoadData returns emmbeded database as byte array
@@ -20,13 +21,13 @@ func EncodedDataLoader(data string, originalSize int, compressed bool) ([]byte, 
 		if err != nil {
 			return nil, err
 		}
-		decompressed := make([]byte, originalSize)
-		readed, err := decompressingReader.Read(decompressed)
+		defer decompressingReader.Close()
+		decompressed, err := ioutil.ReadAll(decompressingReader)
 		if err != nil {
 			return nil, err
 		}
-		if readed != originalSize {
-			return nil, errors.New("original and decompressed size mismatch")
+		if len(decompressed) != originalSize {
+			return nil, errors.New("original and decompressed data size mismatch")
 		}
 		return decompressed, nil
 	}
