@@ -25,8 +25,6 @@ import (
 	"net"
 )
 
-// go:generate go run ./generator/generator.go --dbname db/GeoLite2-Country.mmdb --output geodb
-// go:generate go-bindata -split -pkg geodb -nomemcopy -o geodb db/...
 //go:generate fileb0x db/convert.json
 
 type staticResolver struct {
