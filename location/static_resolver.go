@@ -17,52 +17,28 @@
 
 package location
 
-import (
-	"errors"
-	"fmt"
-	"github.com/mysterium/node/location/geodb"
-	"github.com/oschwald/geoip2-golang"
-	"net"
-)
-
-//go:generate go run generator/generator.go --dbname db/GeoLite2-Country.mmdb --output geodb --compress
-
 type staticResolver struct {
-	db *geoip2.Reader
+	country string
+	error   error
 }
 
-// StaticResolver returns Resolver which build in country base to lookup country by ip
-func StaticResolver() Resolver {
-
-	dbBytes, err := geodb.LoadData()
-	if err != nil {
-		fmt.Println(err.Error())
+// NewStaticResolver returns staticResolver which uses statically entered value
+func NewStaticResolver(country string) *staticResolver {
+	return &staticResolver{
+		country: country,
+		error:   nil,
 	}
+}
 
-	db, _ := geoip2.FromBytes(dbBytes)
-	return &staticResolver{db: db}
+// NewFailingResolver returns staticResolver with entered error
+func NewFailingResolver(err error) *staticResolver {
+	return &staticResolver{
+		country: "",
+		error:   err,
+	}
 }
 
 // ResolveCountry maps given ip to country
-func (r *staticResolver) ResolveCountry(ip string) (string, error) {
-
-	ipObject := net.ParseIP(ip)
-	if ipObject == nil {
-		return "", errors.New("failed to parse IP")
-	}
-
-	countryRecord, err := r.db.Country(ipObject)
-	if err != nil {
-		return "", err
-	}
-
-	country := countryRecord.Country.IsoCode
-	if country == "" {
-		country = countryRecord.RegisteredCountry.IsoCode
-		if country == "" {
-			return "", errors.New("failed to resolve country")
-		}
-	}
-
-	return country, nil
+func (d *staticResolver) ResolveCountry(ip string) (string, error) {
+	return d.country, d.error
 }

@@ -36,7 +36,7 @@ func TestNewDetector(t *testing.T) {
 func TestWithIpResolverFailing(t *testing.T) {
 	ipErr := errors.New("ip resolver error")
 	ipResolver := ip.NewFailingFakeResolver(ipErr)
-	detector := NewDetectorWithLocationResolver(ipResolver, NewResolverFake(""))
+	detector := NewDetectorWithLocationResolver(ipResolver, NewStaticResolver(""))
 	location, err := detector.DetectLocation()
 	assert.EqualError(t, ipErr, err.Error())
 	assert.Equal(t, Location{}, location)
@@ -45,7 +45,7 @@ func TestWithIpResolverFailing(t *testing.T) {
 func TestWithLocationResolverFailing(t *testing.T) {
 	ipResolver := ip.NewFakeResolver("")
 	locationErr := errors.New("location resolver error")
-	locationResolver := NewFailingResolverFake(locationErr)
+	locationResolver := NewFailingResolver(locationErr)
 	detector := NewDetectorWithLocationResolver(ipResolver, locationResolver)
 	location, err := detector.DetectLocation()
 	assert.EqualError(t, locationErr, err.Error())

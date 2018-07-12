@@ -26,7 +26,7 @@ import (
 
 func TestLocationCacheFirstCall(t *testing.T) {
 	ipResolver := ip.NewFakeResolver("100.100.100.100")
-	locationResolver := NewResolverFake("country")
+	locationResolver := NewStaticResolver("country")
 	locationDetector := NewDetectorWithLocationResolver(ipResolver, locationResolver)
 	locationCache := NewLocationCache(locationDetector)
 	location := locationCache.Get()
@@ -35,7 +35,7 @@ func TestLocationCacheFirstCall(t *testing.T) {
 
 func TestLocationCacheFirstSecondCalls(t *testing.T) {
 	ipResolver := ip.NewFakeResolver("100.100.100.100")
-	locationResolver := NewResolverFake("country")
+	locationResolver := NewStaticResolver("country")
 	locationDetector := NewDetectorWithLocationResolver(ipResolver, locationResolver)
 	locationCache := NewLocationCache(locationDetector)
 	location, err := locationCache.RefreshAndGet()
@@ -50,7 +50,7 @@ func TestLocationCacheFirstSecondCalls(t *testing.T) {
 func TestLocationCacheWithError(t *testing.T) {
 	ipResolver := ip.NewFakeResolver("")
 	locationErr := errors.New("location resolver error")
-	locationResolver := NewFailingResolverFake(locationErr)
+	locationResolver := NewFailingResolver(locationErr)
 	locationDetector := NewDetectorWithLocationResolver(ipResolver, locationResolver)
 	locationCache := NewLocationCache(locationDetector)
 	location, err := locationCache.RefreshAndGet()

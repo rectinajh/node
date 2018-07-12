@@ -75,7 +75,7 @@ func NewCommandWith(
 
 	var locationResolver location.Resolver
 	if options.LocationCountry != "" {
-		locationResolver = location.NewResolverFake(options.LocationCountry)
+		locationResolver = location.NewStaticResolver(options.LocationCountry)
 	} else if options.LocationDatabase != "" {
 		locationResolver = location.NewResolver(filepath.Join(options.DirectoryConfig, options.LocationDatabase))
 	} else {
