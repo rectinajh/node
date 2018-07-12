@@ -20,12 +20,12 @@ package location
 import (
 	"errors"
 	"fmt"
-	"github.com/mysterium/node/location/gen_db"
+	"github.com/mysterium/node/location/gendb"
 	"github.com/oschwald/geoip2-golang"
 	"net"
 )
 
-//go:generate go run generator/generator.go --dbname db/GeoLite2-Country.mmdb --output gen_db --compress
+//go:generate go run generator/generator.go --dbname db/GeoLite2-Country.mmdb --output gendb --compress
 
 type builtInResolver struct {
 	db *geoip2.Reader
@@ -34,7 +34,7 @@ type builtInResolver struct {
 // BuiltInResolver returns Resolver which build in country base to lookup country by ip
 func BuiltInResolver() Resolver {
 
-	dbBytes, err := gen_db.LoadData()
+	dbBytes, err := gendb.LoadData()
 	if err != nil {
 		fmt.Println(err.Error())
 	}

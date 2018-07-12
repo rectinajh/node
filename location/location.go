@@ -17,6 +17,7 @@
 
 package location
 
+// Location structure represents location information (ip and country)
 type Location struct {
 	// IP address
 	// example: 127.0.0.1
