@@ -18,36 +18,33 @@
 package gendb
 
 import (
-	"bytes"
 	"compress/gzip"
 	"encoding/base64"
 	"errors"
+	"io"
 	"io/ioutil"
+	"strings"
 )
 
 // EncodedDataLoader returns emmbeded database as byte array
-func EncodedDataLoader(data string, originalSize int, compressed bool) ([]byte, error) {
-	decoded, err := base64.RawStdEncoding.DecodeString(data)
+func EncodedDataLoader(data string, originalSize int, compressed bool) (decompressed []byte, err error) {
+	var reader io.Reader
+
+	reader = base64.NewDecoder(base64.RawStdEncoding, strings.NewReader(data))
+
+	if compressed {
+		reader, err = gzip.NewReader(reader)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	decompressed, err = ioutil.ReadAll(reader)
 	if err != nil {
 		return nil, err
 	}
-
-	if compressed {
-		reader := bytes.NewReader(decoded)
-		decompressingReader, err := gzip.NewReader(reader)
-		if err != nil {
-			return nil, err
-		}
-		defer decompressingReader.Close()
-		decompressed, err := ioutil.ReadAll(decompressingReader)
-		if err != nil {
-			return nil, err
-		}
-		if len(decompressed) != originalSize {
-			return nil, errors.New("original and decompressed data size mismatch")
-		}
-		return decompressed, nil
+	if len(decompressed) != originalSize {
+		return nil, errors.New("original and decompressed data size mismatch")
 	}
-
-	return decoded, nil
+	return decompressed, nil
 }
