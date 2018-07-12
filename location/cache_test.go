@@ -27,7 +27,7 @@ import (
 func TestLocationCacheFirstCall(t *testing.T) {
 	ipResolver := ip.NewFakeResolver("100.100.100.100")
 	locationResolver := NewStaticResolver("country")
-	locationDetector := NewDetectorWithLocationResolver(ipResolver, locationResolver)
+	locationDetector := NewDetector(ipResolver, locationResolver)
 	locationCache := NewLocationCache(locationDetector)
 	location := locationCache.Get()
 	assert.Equal(t, Location{}, location)
@@ -36,7 +36,7 @@ func TestLocationCacheFirstCall(t *testing.T) {
 func TestLocationCacheFirstSecondCalls(t *testing.T) {
 	ipResolver := ip.NewFakeResolver("100.100.100.100")
 	locationResolver := NewStaticResolver("country")
-	locationDetector := NewDetectorWithLocationResolver(ipResolver, locationResolver)
+	locationDetector := NewDetector(ipResolver, locationResolver)
 	locationCache := NewLocationCache(locationDetector)
 	location, err := locationCache.RefreshAndGet()
 	assert.Equal(t, "country", location.Country)
@@ -51,7 +51,7 @@ func TestLocationCacheWithError(t *testing.T) {
 	ipResolver := ip.NewFakeResolver("")
 	locationErr := errors.New("location resolver error")
 	locationResolver := NewFailingResolver(locationErr)
-	locationDetector := NewDetectorWithLocationResolver(ipResolver, locationResolver)
+	locationDetector := NewDetector(ipResolver, locationResolver)
 	locationCache := NewLocationCache(locationDetector)
 	location, err := locationCache.RefreshAndGet()
 	assert.EqualError(t, locationErr, err.Error())

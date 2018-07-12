@@ -34,8 +34,9 @@ type CommandOptions struct {
 	Identity   string
 	Passphrase string
 
-	LocationCountry  string
-	LocationDatabase string
+	LocationDatabaseBuiltIn bool
+	LocationCountry         string
+	LocationDatabase        string
 
 	DiscoveryAPIAddress string
 	BrokerAddress       string
@@ -107,6 +108,13 @@ func ParseArguments(args []string) (options CommandOptions, err error) {
 		"identity.passphrase",
 		"",
 		"Used to unlock keystore's identity",
+	)
+
+	flags.BoolVar(
+		&options.LocationDatabaseBuiltIn,
+		"location.builtin-db",
+		true,
+		"Same as location.database but uses internally built database instead",
 	)
 
 	flags.StringVar(

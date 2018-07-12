@@ -23,19 +23,19 @@ import (
 	"net"
 )
 
-type resolver struct {
+type externalDbResolver struct {
 	databasePath string
 }
 
-// NewResolver returns Resolver which uses country database
-func NewResolver(databasePath string) Resolver {
-	return &resolver{
+// NewExternalDbResolver returns Resolver which uses external country database file
+func NewExternalDbResolver(databasePath string) Resolver {
+	return &externalDbResolver{
 		databasePath: databasePath,
 	}
 }
 
 // ResolveCountry maps given ip to country
-func (r *resolver) ResolveCountry(ip string) (string, error) {
+func (r *externalDbResolver) ResolveCountry(ip string) (string, error) {
 	db, err := geoip2.Open(r.databasePath)
 	if err != nil {
 		return "", err

@@ -73,16 +73,17 @@ func NewCommandWith(
 		createSigner,
 	)
 
+	//TODO this mess is fixed with another PR
 	var locationResolver location.Resolver
 	if options.LocationCountry != "" {
 		locationResolver = location.NewStaticResolver(options.LocationCountry)
-	} else if options.LocationDatabase != "" {
-		locationResolver = location.NewResolver(filepath.Join(options.DirectoryConfig, options.LocationDatabase))
+	} else if options.LocationDatabaseBuiltIn {
+		locationResolver = location.NewBuiltInResolver()
 	} else {
-		locationResolver = location.NewResolver(filepath.Join(options.DirectoryConfig, defaultLocationDatabase))
+		locationResolver = location.NewExternalDbResolver(filepath.Join(options.DirectoryConfig, options.LocationDatabase))
 	}
 
-	locationDetector := location.NewDetectorWithLocationResolver(ipResolver, locationResolver)
+	locationDetector := location.NewDetector(ipResolver, locationResolver)
 
 	return &Command{
 		identityLoader: func() (identity.Identity, error) {

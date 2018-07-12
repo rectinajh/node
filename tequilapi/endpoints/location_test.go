@@ -56,11 +56,11 @@ func TestAddRoutesForLocationAddsRoutes(t *testing.T) {
 
 	currentIpResolver := ip.NewFakeResolver("123.123.123.123")
 	currentLocationResolver := location.NewStaticResolver("current country")
-	currentLocationDetector := location.NewDetectorWithLocationResolver(currentIpResolver, currentLocationResolver)
+	currentLocationDetector := location.NewDetector(currentIpResolver, currentLocationResolver)
 
 	originalIpResolver := ip.NewFakeResolver("100.100.100.100")
 	originalLocationResolver := location.NewStaticResolver("original country")
-	originalLocationDetector := location.NewDetectorWithLocationResolver(originalIpResolver, originalLocationResolver)
+	originalLocationDetector := location.NewDetector(originalIpResolver, originalLocationResolver)
 	originalLocationCache := location.NewLocationCache(originalLocationDetector)
 	originalLocationCache.RefreshAndGet()
 
@@ -104,11 +104,11 @@ func TestGetLocationWhenConnected(t *testing.T) {
 
 	currentIpResolver := ip.NewFakeResolver("123.123.123.123")
 	currentLocationResolver := location.NewStaticResolver("current country")
-	currentLocationDetector := location.NewDetectorWithLocationResolver(currentIpResolver, currentLocationResolver)
+	currentLocationDetector := location.NewDetector(currentIpResolver, currentLocationResolver)
 
 	originalIpResolver := ip.NewFakeResolver("100.100.100.100")
 	originalLocationResolver := location.NewStaticResolver("original country")
-	originalLocationDetector := location.NewDetectorWithLocationResolver(originalIpResolver, originalLocationResolver)
+	originalLocationDetector := location.NewDetector(originalIpResolver, originalLocationResolver)
 	originalLocationCache := location.NewLocationCache(originalLocationDetector)
 	originalLocationCache.RefreshAndGet()
 
@@ -131,7 +131,7 @@ func TestGetLocationWhenConnected(t *testing.T) {
 func TestGetLocationWhenNotConnected(t *testing.T) {
 	originalIpResolver := ip.NewFakeResolver("100.100.100.100")
 	originalLocationResolver := location.NewStaticResolver("original country")
-	originalLocationDetector := location.NewDetectorWithLocationResolver(originalIpResolver, originalLocationResolver)
+	originalLocationDetector := location.NewDetector(originalIpResolver, originalLocationResolver)
 	originalLocationCache := location.NewLocationCache(originalLocationDetector)
 	originalLocationCache.RefreshAndGet()
 

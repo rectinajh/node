@@ -31,8 +31,8 @@ type builtInResolver struct {
 	db *geoip2.Reader
 }
 
-// BuiltInResolver returns Resolver which build in country base to lookup country by ip
-func BuiltInResolver() Resolver {
+// NewBuiltInResolver returns Resolver which build in country base to lookup country by ip
+func NewBuiltInResolver() Resolver {
 
 	dbBytes, err := gendb.LoadData()
 	if err != nil {

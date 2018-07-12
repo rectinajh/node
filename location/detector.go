@@ -26,14 +26,8 @@ type detector struct {
 	locationResolver Resolver
 }
 
-// NewDetector constructs Detector
-func NewDetector(ipResolver ip.Resolver, databasePath string) Detector {
-	//return NewDetectorWithLocationResolver(ipResolver, NewResolver(databasePath))
-	return NewDetectorWithLocationResolver(ipResolver, BuiltInResolver())
-}
-
-// NewDetectorWithLocationResolver constructs Detector
-func NewDetectorWithLocationResolver(ipResolver ip.Resolver, locationResolver Resolver) Detector {
+// NewDetector constructs Detector with given ip and country resolver
+func NewDetector(ipResolver ip.Resolver, locationResolver Resolver) Detector {
 	return &detector{
 		ipResolver:       ipResolver,
 		locationResolver: locationResolver,

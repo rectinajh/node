@@ -42,8 +42,9 @@ type CommandOptions struct {
 	DiscoveryAPIAddress string
 	IpifyUrl            string
 
-	LocationDatabase string
-	Localnet         bool
+	LocationDatabase        string
+	LocationDatabaseBuiltIn bool
+	Localnet                bool
 }
 
 // ParseArguments parses CLI flags and adds to CommandOptions structure
@@ -124,6 +125,13 @@ func ParseArguments(args []string) (options CommandOptions, err error) {
 		"ipify-url",
 		"https://api.ipify.org/",
 		"Address (URL form) of ipify service",
+	)
+
+	flags.BoolVar(
+		&options.LocationDatabaseBuiltIn,
+		"location.builtin-db",
+		true,
+		"Same as location.database but uses internally built database instead",
 	)
 
 	flags.StringVar(

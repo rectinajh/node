@@ -74,9 +74,17 @@ func NewCommandWith(
 
 	ipResolver := ip.NewResolver(options.IpifyUrl)
 
+	var locationResolver location.Resolver
+	switch {
+	case options.LocationDatabaseBuiltIn:
+		locationResolver = location.NewBuiltInResolver()
+	default:
+		locationResolver = location.NewExternalDbResolver(filepath.Join(options.DirectoryConfig, options.LocationDatabase))
+	}
+
 	locationDetector := location.NewDetector(
 		ipResolver,
-		filepath.Join(options.DirectoryConfig, options.LocationDatabase),
+		locationResolver,
 	)
 
 	originalLocationCache := location.NewLocationCache(locationDetector)

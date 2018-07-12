@@ -23,7 +23,7 @@ import (
 )
 
 func TestBuiltInResolverWorks(t *testing.T) {
-	country, err := BuiltInResolver().ResolveCountry("46.111.111.99")
+	country, err := NewBuiltInResolver().ResolveCountry("46.111.111.99")
 	assert.NoError(t, err)
 	assert.Equal(t, "RU", country)
 }
